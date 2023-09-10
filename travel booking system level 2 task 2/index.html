@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Booking System</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Travel Booking</h1>
+        <form id="booking-form">
+            <label for="from">From:</label>
+            <input type="text" id="from" required>
+
+            <label for="to">To:</label>
+            <input type="text" id="to" required>
+
+            <label for="departure-date">Departure Date:</label>
+            <input type="date" id="departure-date" required>
+
+            <label for="return-date">Return Date:</label>
+            <input type="date" id="return-date" required>
+
+            <button type="submit">Book Now</button>
+        </form>
+
+        <div id="booking-confirmation"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

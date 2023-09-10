@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #todo-list {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        }
+        .task {
+            flex-grow: 1;
+        }
+        .edit-button{
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        .edit-button:hover{
+            background-color: rgb(36, 143, 36);
+        }
+        .delete-button {
+            background-color: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        #add-button{
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            height: 21px;
+            width: 45px;
+            font-size: 14px;
+
+        }
+        #add-button:hover{
+            background-color: rgb(91, 60, 149);
+        }
+        button:hover {
+            background-color: #d63031;
+        }
+        .gradient-custom{
+        background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
+        linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
+        linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
+        radial-gradient(100% 164.72% at 100% 100%, #6100ff 0%, #00ff57 100%),
+        radial-gradient(100% 148.07% at 0% 0%, #fff500 0%, #51d500 100%);
+        background-blend-mode: screen, color-dodge, overlay, difference, normal;
+                      }
+                      </style>
+</head>
+<body>
+    <section class="gradient-custom">
+
+        <div id="todo-list">
+            <h1>To-Do List</h1>
+            <input type="text" id="task" placeholder="Add a new task">
+            <button id="add-button" onclick="addTask()">Add</button>
+            <ul id="task-list">
+                <!-- Tasks will be added here -->
+            </ul>
+        </div>
+    </section>
+        
+        <script>
+        function addTask() {
+            const taskInput = document.getElementById("task");
+            const taskText = taskInput.value.trim();
+            
+            if (taskText !== "") {
+                const taskList = document.getElementById("task-list");
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <span class="task">${taskText}</span>
+                    <button class="edit-button" onclick="editTask(this)">Edit</button>
+                    <button class="delete-button" onclick="deleteTask(this)">Delete</button>
+                `;
+                taskList.appendChild(listItem);
+                taskInput.value = "";
+            }
+        }
+
+        function deleteTask(button) {
+            const listItem = button.parentElement;
+            const taskList = listItem.parentElement;
+            taskList.removeChild(listItem);
+        }
+
+        function editTask(button) {
+            const listItem = button.parentElement;
+            const taskText = listItem.querySelector(".task").textContent;
+            const editedText = prompt("Edit task:", taskText);
+            
+            if (editedText !== null) {
+                listItem.querySelector(".task").textContent = editedText;
+            }
+        }
+    
+        // Function to retrieve tasks from local storage
+        function getTasksFromLocalStorage() {
+            const tasksJSON = localStorage.getItem("tasks");
+            return JSON.parse(tasksJSON) || [];
+        }
+
+        // Function to save tasks to local storage
+        function saveTasksToLocalStorage(tasks) {
+            const tasksJSON = JSON.stringify(tasks);
+            localStorage.setItem("tasks", tasksJSON);
+        }
+
+        // Function to load tasks from local storage and display them
+        function loadTasks() {
+            const taskList = document.getElementById("task-list");
+            const tasks = getTasksFromLocalStorage();
+
+            taskList.innerHTML = "";
+            tasks.forEach(taskText => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                <span class="task">${taskText}</span>
+                <button class="edit-button" onclick="editTask(this)">Edit</button>
+                <button class="delete-button" onclick="deleteTask(this)">Delete</button>
+                `;
+                taskList.appendChild(listItem);
+            });
+        }
+        
+        // Call loadTasks when the page loads to populate the list from local storage
+        window.onload = loadTasks;
+        
+       
+        </script>
+</body>
+</html>
